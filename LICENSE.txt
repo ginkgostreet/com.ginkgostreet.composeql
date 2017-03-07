@@ -1,0 +1,3 @@
+Package: com.ginkgostreet.composeql
+Copyright (C) 2017, GinkgoStreet Labs <devs@ginkgostreet.com>
+All Rights Reserved
