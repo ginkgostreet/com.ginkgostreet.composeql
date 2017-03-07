@@ -2,7 +2,7 @@
 <extension key="com.ginkgostreet.composeql" type="module">
   <file>composeql</file>
   <name>Compose-QL</name>
-  <description>Composable SQL Querries</description>
+  <description>Composable SQL Queries</description>
   <maintainer>
     <author>Ginkgo Street Labs</author>
     <email>devs@ginkgostreet.com</email>
