@@ -184,7 +184,8 @@ class CRM_ComposeQL_SQLUtil {
   }
 
   /**
-   * Merge WHERE arrays.
+   * Useful when you have two complex WHERE clauses and you want to define
+   * the relationship between then (i.e. specify $paren).
    *
    * @param Array $where see format in parseWHEREs()
    * @param Array $add
