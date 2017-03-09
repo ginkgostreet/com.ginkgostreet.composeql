@@ -187,6 +187,9 @@ class CRM_ComposeQL_SQLUtil {
    * Useful when you have two complex WHERE clauses and you want to define
    * the relationship between then (i.e. specify $paren).
    *
+   * If simply catenating two Where clauses, this function merely provides some
+   * syntactic sugar and ensures the proper array structures.
+   *
    * @param Array $where see format in parseWHEREs()
    * @param Array $add
    * @param String $paren - add as parenthetical (specify AND/OR)
