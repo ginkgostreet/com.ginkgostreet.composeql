@@ -8,14 +8,14 @@ class CRM_ComposeQL_APIUtil {
  * Chained calls are accessible via
  * <ul><li>custom_group</li><li>option_group</li><li>option_group > Options</li>
  *
- * @param type $field
+ * @param type $fieldName
  * @return array()
  */
   static function getCustomFieldSchema($groupName, $fieldName) {
     $result = civicrm_api3('CustomField', 'get',
       array(
         'sequential' => 0,
-        'name' => $field,
+        'name' => $fieldName,
         'is_active' => '1',
         'return' => array(
           'column_name',
