@@ -273,6 +273,7 @@ class CRM_ComposeQL_SQLUtil {
     $WHERES = CRM_Utils_Array::value('WHERES', $components, array());
     $GROUP_BYS = CRM_Utils_Array::value('GROUP_BYS', $components, array());
     $ORDER_BYS = CRM_Utils_Array::value('ORDER_BYS', $components, array());
+    $APPEND = CRM_Utils_Array::value('APPEND', $components, NULL);
 
     if (is_array($SELECTS)) {
       foreach ($SELECTS as $table => $columns) {
@@ -312,7 +313,8 @@ class CRM_ComposeQL_SQLUtil {
       "SELECT {$clzSelect} FROM {$clzFrom}"
       . ((isset($clzWhere))? " WHERE {$clzWhere}" : '')
       . ((isset($clzGroupBy))? " GROUP BY {$clzGroupBy}" : '')
-      . ((isset($clzOrderBy))? " ORDER BY {$clzOrderBy}" : ''),
+      . ((isset($clzOrderBy))? " ORDER BY {$clzOrderBy}" : '')
+      .$APPEND,
       'params' => $params
     );
   }
