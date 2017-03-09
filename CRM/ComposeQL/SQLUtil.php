@@ -99,6 +99,7 @@ class CRM_ComposeQL_SQLUtil {
     $params = array();
     foreach ($WHERES as $key => $where) {
       $conj = $paren = $recurse = NULL;
+      $passthrough = FALSE;
       if (is_array($where)) {
         $recurse = self::normalizeParenthetical($where);
       } else {
@@ -109,6 +110,11 @@ class CRM_ComposeQL_SQLUtil {
         //explicit syntax for sub-clause
         $conj = $where[$recurse];
         unset($where[$recurse]);
+
+        if (count($where) < 1) {
+          // don't try to recurse on an extraneous (empty) paren clause.
+          continue;
+        }
 
         if (strtoupper($key) == 'AND' || strtoupper($key) == 'OR') {
         // lazy syntax for sub-clause
@@ -185,8 +191,12 @@ class CRM_ComposeQL_SQLUtil {
    * @param String $paren - add as parenthetical (specify AND/OR)
    */
   static function composeWhereClauses($where, $add, $paren=NULL) {
-    if (!is_array($where)) {
+    if (!is_array($where) && !is_array($add)) {
       throw new CRM_Exception('Missing $where parameter to composeWhereClauses()');
+    } elseif( is_array($add) && ( !is_array($where) || count($where) < 1 ) ) {
+      return $add;
+    } elseif (is_array($where) && ( !is_array($add) || count($add) < 1 ) ) {
+      return $where;
     }
     if (isset($paren)) {
       if (array_key_exists('WHERES', $add)) {
@@ -327,17 +337,16 @@ class CRM_ComposeQL_SQLUtil {
   }
 
   static function debugComposeQLQuery($parameterizedQuery) {
-    if (!is_array($parameterizedQuery)) {
-      $parameterizedQuery['sql'] = $parameterizedQuery;
-    }
-    if (array_key_exists('SELECTS', $parameterizedQuery)) {
+    if (isset($parameterizedQuery['SELECTS'])) {
       $parameterizedQuery = CRM_ComposeQL_SQLUtil::createSqlSelectStatement($parameterizedQuery);
     }
-    if (array_key_exists('params', $parameterizedQuery)
-      && count($parameterizedQuery['params'])) {
-      $parameterizedQuery['sql'] = CRM_ComposeQL_DAO::composeQuery($parameterizedQuery['sql'], $parameterizedQuery['params']);
+    if (isset($parameterizedQuery['sql']) && isset($parameterizedQuery['params'])) {
+      $parameterizedQuery =
+        CRM_ComposeQL_DAO::composeQuery($parameterizedQuery['sql'],
+          $parameterizedQuery['params']
+          );
     }
-    throw new CRM_Exception(var_export($parameterizedQuery['sql'], TRUE));
+    throw new CRM_Exception(var_export($parameterizedQuery, TRUE));
   }
 
   /**

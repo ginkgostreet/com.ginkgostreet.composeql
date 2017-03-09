@@ -11,7 +11,7 @@ class CRM_ComposeQL_APIUtil {
  * @param type $field
  * @return array()
  */
-  static function getCustomFieldSchema($field) {
+  static function getCustomFieldSchema($groupName, $fieldName) {
     $result = civicrm_api3('CustomField', 'get',
       array(
         'sequential' => 0,
@@ -28,6 +28,7 @@ class CRM_ComposeQL_APIUtil {
           'is_required',
           'option_group_id',
         ),
+        'custom_group_id.name' => $groupName,
         'api.CustomGroup.get' => array('id' => '$value.custom_group_id'),
         'api.OptionGroup.get' => array('id' => '$value.option_group_id'),
         'api.OptionValue.get' => array(
