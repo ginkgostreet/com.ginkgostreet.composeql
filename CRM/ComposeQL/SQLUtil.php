@@ -318,7 +318,7 @@ class CRM_ComposeQL_SQLUtil {
       . ((isset($clzWhere))? " WHERE {$clzWhere}" : '')
       . ((isset($clzGroupBy))? " GROUP BY {$clzGroupBy}" : '')
       . ((isset($clzOrderBy))? " ORDER BY {$clzOrderBy}" : '')
-      .$APPEND,
+      . ((isset($APPEND))? " {$APPEND}": ''),
       'params' => $params
     );
   }
