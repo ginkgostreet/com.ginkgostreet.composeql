@@ -342,6 +342,9 @@ class CRM_ComposeQL_SQLUtil {
     return $clzFrom;
   }
 
+  /**
+  * return a ComposeQL Query object as a string.
+  **/
   static function debugComposeQLQuery($parameterizedQuery) {
     if (isset($parameterizedQuery['SELECTS'])) {
       $parameterizedQuery = CRM_ComposeQL_SQLUtil::createSqlSelectStatement($parameterizedQuery);
@@ -352,7 +355,7 @@ class CRM_ComposeQL_SQLUtil {
           $parameterizedQuery['params']
           );
     }
-    throw new CRM_Exception(var_export($parameterizedQuery, TRUE));
+    return var_export($parameterizedQuery, TRUE);
   }
 
   /**
