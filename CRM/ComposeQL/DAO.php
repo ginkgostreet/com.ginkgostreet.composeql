@@ -23,6 +23,7 @@ class CRM_ComposeQL_DAO extends CRM_Core_DAO {
 
     $dao = self::executeQuery($query['sql'], $query['params']);
 
+    $result = array();
     while ($dao->fetch()) {
       $row = array();
       if (isset($returnFields)) {
@@ -42,4 +43,3 @@ class CRM_ComposeQL_DAO extends CRM_Core_DAO {
   }
 
 }
-
