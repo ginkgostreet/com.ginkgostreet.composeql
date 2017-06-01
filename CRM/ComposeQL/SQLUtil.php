@@ -97,6 +97,7 @@ class CRM_ComposeQL_SQLUtil {
    */
   static function parseWHEREs($WHERES, &$n=0) {
     $params = array();
+    $clzWhere = null;
     foreach ($WHERES as $key => $where) {
       $conj = $paren = $recurse = NULL;
       $passthrough = FALSE;
@@ -263,7 +264,7 @@ class CRM_ComposeQL_SQLUtil {
    * @param array $components
    * @return array( 'sql' => ..., 'params' => ... ) for invocation of CRM_Core_DAO::executeQuery()
    */
-  static function createSqlSelectStatement($components=array()){
+  static function createSqlSelectStatement($components=array()) {
     if (array_key_exists('SELECTS', $components) &&
        (array_key_exists('TABLES', $components) || array_key_exists('JOINS', $components))
       ) { // good
@@ -278,6 +279,12 @@ class CRM_ComposeQL_SQLUtil {
     $GROUP_BYS = CRM_Utils_Array::value('GROUP_BYS', $components, array());
     $ORDER_BYS = CRM_Utils_Array::value('ORDER_BYS', $components, array());
     $APPEND = CRM_Utils_Array::value('APPEND', $components, NULL);
+
+    $clzSelect = null;
+    $clzFrom = null;
+    $clzWhere = null;
+    $clzGroupBy = null;
+    $clzOrderBy = null;
 
     if (is_array($SELECTS)) {
       foreach ($SELECTS as $table => $columns) {
@@ -324,6 +331,7 @@ class CRM_ComposeQL_SQLUtil {
   }
 
   static function parseJOINS($JOINS=array()) {
+    $clzFrom = null;
     foreach ($JOINS as &$join) {
       $left = $right = NULL;
       if (isset($join['left']) && isset($join['right'])) {
@@ -355,7 +363,7 @@ class CRM_ComposeQL_SQLUtil {
           $parameterizedQuery['params']
           );
     }
-    return var_export($parameterizedQuery, TRUE);
+    return $parameterizedQuery;
   }
 
   /**
