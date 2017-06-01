@@ -88,8 +88,8 @@ class CRM_ComposeQL_APIUtil {
   * @return array api $result['values']
   */
   static function extractChainedApi($chainKey, $result, $keys=array()) {
-    $chained = array_pop(self::extractFields($result, array($chainKey)));
-    return self::extractFields($chained, $keys);
+    $chained = self::extractFields($result, array($chainKey));
+    return self::extractFields(array_pop($chained), $keys);
   }
 
   /**
@@ -102,12 +102,13 @@ class CRM_ComposeQL_APIUtil {
    * @return array $result['values']
    */
   static function extractFields($result, $keys=array()) {
+    $return = array();
     if (!is_array($result)) {
-      return array();
+      return $return;
     }
     $_keys = array_flip($keys);
     $items = (array_key_exists('values', $result)) ? $result['values'] : $result;
-    $return = array();
+
     foreach ( $items as $key => $item ) {
       $return[$key] = ( count($_keys)>0 )
         ? array_intersect_key($item, $_keys)
@@ -118,4 +119,3 @@ class CRM_ComposeQL_APIUtil {
   }
 
 }
-
