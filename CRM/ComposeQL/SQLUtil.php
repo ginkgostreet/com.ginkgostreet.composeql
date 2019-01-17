@@ -229,6 +229,7 @@ class CRM_ComposeQL_SQLUtil {
       if ($paren) {
         $where[] = $add;
       } else {
+        // TODO: this may be causing damage. Maybe don't use this if there are string-keys in the array.
         $where = array_merge_recursive($where, $add);
       }
     }
